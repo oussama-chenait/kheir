@@ -186,28 +186,40 @@
                 <section>
                     <h2 style="margin-bottom: 1.5rem;"><i class="fas fa-comments"></i> اسأل الأستاذ</h2>
 
-                    <div class="ask-teacher-form">
+                    <form id="ask-teacher-form" class="ask-teacher-form">
                         <div class="form-group">
                             <label>عنوان السؤال</label>
-                            <input type="text" placeholder="مثلاً: صعوبة في فهم قاعدة السلسلة">
+                            <input type="text" id="question-title" placeholder="مثلاً: صعوبة في فهم قاعدة السلسلة"
+                                required>
                         </div>
 
                         <div class="form-group">
                             <label>تفاصيل السؤال</label>
-                            <textarea rows="4" placeholder="اكتب سؤالك هنا بالتفصيل..."></textarea>
+                            <textarea id="question-details" rows="4" placeholder="اكتب سؤالك هنا بالتفصيل..."
+                                required></textarea>
                         </div>
 
                         <div class="form-group">
                             <label>صورة للسؤال (اختياري)</label>
-                            <div class="upload-box">
-                                <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
-                                <p>اسحب الصورة هنا أو اضغط للرفع</p>
+                            <input type="file" id="question-image-input" accept="image/*" style="display: none;">
+                            <div class="upload-box" id="image-upload-box"
+                                style="cursor: pointer; position: relative; overflow: hidden;">
+                                <div id="upload-placeholder">
+                                    <i class="fas fa-cloud-upload-alt"
+                                        style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                                    <p>اضغط لاختيار صورة</p>
+                                </div>
+                                <img id="image-preview" src="#" alt="Preview"
+                                    style="display: none; width: 100%; height: 100%; object-fit: contain; position: absolute; top: 0; left: 0; background: var(--bg);">
+                                <button type="button" id="remove-image"
+                                    style="display: none; position: absolute; top: 5px; right: 5px; background: rgba(239, 68, 68, 0.9); border: none; color: white; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; z-index: 10;"><i
+                                        class="fas fa-times"></i></button>
                             </div>
                         </div>
 
-                        <button class="btn btn-primary" style="width: 100%; justify-content: center;">إرسال
-                            السؤال</button>
-                    </div>
+                        <button type="submit" class="btn btn-primary"
+                            style="width: 100%; justify-content: center;">إرسال السؤال</button>
+                    </form>
                 </section>
             </div>
             <!-- My Questions Section -->

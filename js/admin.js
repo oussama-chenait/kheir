@@ -99,21 +99,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 const docId = doc.id;
                 const div = document.createElement('div');
                 div.className = 'inbox-item';
-                div.innerHTML = `
+                const inboxHeaderHTML = `
                     <div class="inbox-header">
-                        <span class="badge">${q.reply ? 'تم الرد' : 'سؤال جديد'}</span>
-                        <span style="color: var(--text-muted);">${q.time}</span>
+                        <span class="badge" style="background: ${q.reply ? 'rgba(16, 185, 129, 0.1)' : 'rgba(99, 102, 241, 0.1)'}; color: ${q.reply ? '#10b981' : 'var(--primary)'}">${q.reply ? 'تم الرد' : 'سؤال جديد'}</span>
+                        <span style="color: var(--text-muted); font-size: 0.8rem;">${q.time}</span>
                     </div>
-                    <div class="inbox-title">${q.sender}: ${q.title}</div>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; background: var(--bg); padding: 0.8rem; border-radius: 0.5rem;">"${q.details}"</p>
+                `;
+
+                const imageHTML = q.image ? `
+                    <div style="margin: 1rem 0; border-radius: 0.8rem; overflow: hidden; border: 1px solid var(--border); cursor: pointer;" onclick="window.open('${q.image}', '_blank')">
+                        <img src="${q.image}" alt="Question Image" style="max-width: 100%; display: block; max-height: 200px; object-fit: cover;">
+                        <div style="background: rgba(0,0,0,0.5); color: white; padding: 0.3rem; text-align: center; font-size: 0.75rem;"><i class="fas fa-search-plus"></i> اضغط لتكبير الصورة</div>
+                    </div>
+                ` : '';
+
+                div.innerHTML = `
+                    ${inboxHeaderHTML}
+                    <div class="inbox-title" style="font-weight: bold; margin: 0.5rem 0;">${q.sender}: ${q.title}</div>
+                    <p style="font-size: 0.9rem; color: var(--text); background: var(--bg); padding: 1rem; border-radius: 0.5rem; border-right: 3px solid var(--primary);">${q.details}</p>
+                    ${imageHTML}
                     
-                    <div style="margin-top: 1rem;">
-                        <textarea id="reply-${docId}" placeholder="اكتب ردك هنا..." style="width: 100%; padding: 0.8rem; border-radius: 0.5rem; background: var(--bg); border: 1px solid var(--border); color: white; resize: vertical; margin-bottom: 0.5rem;">${q.reply || ''}</textarea>
+                    <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px dashed var(--border);">
+                        <textarea id="reply-${docId}" placeholder="اكتب ردك هنا..." style="width: 100%; padding: 0.8rem; border-radius: 0.5rem; background: var(--bg); border: 1px solid var(--border); color: white; resize: vertical; margin-bottom: 0.5rem; min-height: 80px;">${q.reply || ''}</textarea>
                         <div style="display: flex; gap: 0.5rem;">
-                            <button onclick="saveReply('${docId}')" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+                            <button onclick="saveReply('${docId}')" class="btn btn-primary" style="flex-grow: 1; justify-content: center;">
                                 <i class="fas fa-paper-plane"></i> ${q.reply ? 'تحديث الرد' : 'إرسال الرد'}
                             </button>
-                            <button onclick="deleteQuestion('${docId}')" class="btn" style="background: var(--secondary); font-size: 0.8rem; padding: 0.4rem 0.8rem;">حذف</button>
+                            <button onclick="deleteQuestion('${docId}')" class="btn" style="background: var(--secondary);"><i class="fas fa-trash"></i></button>
                         </div>
                     </div>
                 `;

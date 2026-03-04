@@ -387,6 +387,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     div.style.marginBottom = '1rem';
                     div.style.padding = '1.5rem';
 
+                    let imageHTML = q.image
+                        ? `<div style="margin: 1rem 0; border-radius: 0.5rem; overflow: hidden; border: 1px solid var(--border);">
+                             <img src="${q.image}" alt="Question Image" style="max-width: 100%; display: block;">
+                           </div>`
+                        : '';
+
                     let replyHTML = q.reply
                         ? `<div style="margin-top: 1rem; padding: 1rem; background: rgba(16, 185, 129, 0.1); border-right: 4px solid #10b981; border-radius: 0.5rem;">
                          <strong><i class="fas fa-reply"></i> رد الأستاذ:</strong>
@@ -402,6 +408,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span style="font-size: 0.8rem; color: var(--text-muted);">${q.time}</span>
                     </div>
                     <p style="color: var(--text-muted);">${q.details}</p>
+                    ${imageHTML}
                     ${replyHTML}
                 `;
                     myQuestionsList.appendChild(div);
@@ -409,21 +416,70 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    if (submitBtn) {
-        submitBtn.addEventListener('click', (e) => {
+    // 6. Image Upload Logic for Community
+    const imageUploadBox = document.getElementById('image-upload-box');
+    const imageInput = document.getElementById('question-image-input');
+    const imagePreview = document.getElementById('image-preview');
+    const uploadPlaceholder = document.getElementById('upload-placeholder');
+    const removeImageBtn = document.getElementById('remove-image');
+    let selectedImageBase64 = null;
+
+    if (imageUploadBox && imageInput) {
+        imageUploadBox.addEventListener('click', () => imageInput.click());
+
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 1024 * 1024) { // 1MB Limit
+                    alert('الصورة كبيرة جداً، يرجى اختيار صورة أقل من 1 ميجابايت.');
+                    imageInput.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    selectedImageBase64 = event.target.result;
+                    imagePreview.src = selectedImageBase64;
+                    imagePreview.style.display = 'block';
+                    uploadPlaceholder.style.display = 'none';
+                    removeImageBtn.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        removeImageBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            selectedImageBase64 = null;
+            imageInput.value = '';
+            imagePreview.src = '#';
+            imagePreview.style.display = 'none';
+            uploadPlaceholder.style.display = 'block';
+            removeImageBtn.style.display = 'none';
+        });
+    }
+
+    const askTeacherForm = document.getElementById('ask-teacher-form');
+    if (askTeacherForm) {
+        askTeacherForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const title = document.querySelector('.ask-teacher-form input').value;
-            const details = document.querySelector('.ask-teacher-form textarea').value;
+            const title = document.getElementById('question-title').value;
+            const details = document.getElementById('question-details').value;
             const currentUser = auth.currentUser;
 
             if (!title || !details) return alert('الرجاء ملء بيانات السؤال');
             if (!currentUser) return alert('الرجاء تسجيل الدخول أولاً');
             if (!window.db) return alert('خطأ في الاتصال بقاعدة البيانات');
 
+            const submitBtn = askTeacherForm.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'جاري الإرسال...';
+
             const newQuestion = {
                 id: Date.now(),
                 title,
                 details,
+                image: selectedImageBase64,
                 sender: currentUser.email.split('@')[0],
                 userEmail: currentUser.email,
                 time: new Date().toLocaleString('ar-DZ'),
@@ -433,11 +489,16 @@ document.addEventListener('DOMContentLoaded', () => {
             db.collection('questions').add(newQuestion)
                 .then(() => {
                     alert('تم إرسال سؤالك بنجاح! سيظهر في لوحة الأستاذ.');
-                    document.querySelector('.ask-teacher-form').reset();
+                    askTeacherForm.reset();
+                    if (removeImageBtn) removeImageBtn.click();
                 })
                 .catch(err => {
                     console.error("Error adding document: ", err);
-                    alert("فشل في إرسال السؤال.");
+                    alert("فشل في إرسال السؤال: " + err.message);
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = 'إرسال السؤال';
                 });
         });
     }
