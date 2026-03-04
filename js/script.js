@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- AUTHENTICATION & UI SYNC ---
     function syncAuthStateUI(user) {
-        const headerInfo = document.querySelector('.header-info p');
+        const headerInfo = document.querySelector('.header-info p') || document.querySelector('header p');
         if (user) {
             authModal.classList.add('hidden');
             const username = user.displayName || user.email.split('@')[0];
