@@ -430,8 +430,8 @@ document.addEventListener('DOMContentLoaded', () => {
         imageInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
-                if (file.size > 1024 * 1024) { // 1MB Limit
-                    alert('الصورة كبيرة جداً، يرجى اختيار صورة أقل من 1 ميجابايت.');
+                if (file.size > 500 * 1024) { // 500KB Limit to avoid Firestore doc size limit
+                    alert('الصورة كبيرة جداً، يرجى اختيار صورة أقل من 500 كيلوبايت.');
                     imageInput.value = '';
                     return;
                 }
@@ -486,19 +486,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 reply: null
             };
 
+            const btnElement = askTeacherForm.querySelector('button[type="submit"]');
+            btnElement.disabled = true;
+            btnElement.innerText = 'جاري الإرسال...';
+            console.log('Attempting to add question to Firestore...', newQuestion);
+
+            // Safety timeout
+            const timeout = setTimeout(() => {
+                if (btnElement.disabled) {
+                    btnElement.disabled = false;
+                    btnElement.innerText = 'إرسال السؤال';
+                    alert('انتهت مهلة الإرسال. يرجى التأكد من:\n1. اتصال الإنترنت.\n2. تفعيل "Testing Mode" في Firestore Rules.\n3. حجم الصورة صغير (أقل من 500 كيلوبايت).');
+                }
+            }, 10000);
+
             db.collection('questions').add(newQuestion)
                 .then(() => {
+                    clearTimeout(timeout);
+                    console.log('Question added successfully!');
                     alert('تم إرسال سؤالك بنجاح! سيظهر في لوحة الأستاذ.');
                     askTeacherForm.reset();
                     if (removeImageBtn) removeImageBtn.click();
                 })
                 .catch(err => {
+                    clearTimeout(timeout);
                     console.error("Error adding document: ", err);
                     alert("فشل في إرسال السؤال: " + err.message);
                 })
                 .finally(() => {
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = 'إرسال السؤال';
+                    if (!btnElement.disabled) return; // Already handled by timeout
+                    btnElement.disabled = false;
+                    btnElement.innerText = 'إرسال السؤال';
                 });
         });
     }
