@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kheir Math | منصة الأستاذ التعليمية</title>
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* RTL Specific Overrides */
+        .sidebar {
+            right: 0;
+            left: auto;
+            border-right: none;
+            border-left: 1px solid var(--border);
+        }
+
+        .main-content {
+            margin-right: 250px;
+            margin-left: 0;
+        }
+
+        .nav-link i {
+            margin-left: 1rem;
+            margin-right: 0;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(100%);
+            }
+
+            .main-content {
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="menu-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Kheir Math</span>
+            </div>
+
+            <ul class="nav-links">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link active">
+                        <i class="fas fa-home"></i>
+                        <span>الرئيسية</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="pages/resources.html" class="nav-link">
+                        <i class="fas fa-book-open"></i>
+                        <span>المكتبة الرقمية</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="pages/mathlab.html" class="nav-link">
+                        <i class="fas fa-flask"></i>
+                        <span>المختبر الرياضي</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="pages/community.html" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <span>منصة التفاعل</span>
+                    </a>
+                </li>
+                <li class="nav-item" style="margin-top: auto;">
+                    <a href="pages/admin.html" class="nav-link" id="admin-link">
+                        <i class="fas fa-user-shield"></i>
+                        <span>لوحة الأستاذ</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <p style="color: var(--text-muted); font-size: 0.8rem; text-align: center;">&copy; 2024 Kheir Math</p>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <div class="header-info">
+                    <h1>لوحة التحكم</h1>
+                    <p style="color: var(--text-muted);">مرحباً بك مجدداً في رحلتك التعليمية</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-bell"></i>
+                        الإعلانات
+                    </button>
+                </div>
+            </header>
+
+            <div class="dashboard-grid">
+                <!-- Announcements -->
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-bullhorn"></i>
+                        تنبيهات مهمة
+                    </div>
+                    <div class="card-content">
+                        <ul id="notifications-list"
+                            style="list-style: none; display: flex; flex-direction: column; gap: 1rem;">
+                            <li style="color: var(--text-muted); font-style: italic;">جاري تحميل التنبيهات...</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Question of the Week -->
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-star"></i>
+                        سؤال الأسبوع
+                    </div>
+                    <div class="card-content">
+                        <p style="margin-bottom: 1rem;">أوجد قيمة $x$ التي تحقق المعادلة:</p>
+                        <div
+                            style="background: var(--bg); padding: 1rem; border-radius: 0.5rem; text-align: center; font-size: 1.5rem; margin-bottom: 1rem;">
+                            $2^x + 4^x = 20$
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%; justify-content: center;">إرسال
+                            الإجابة</button>
+                    </div>
+                </div>
+
+                <!-- Leaderboard -->
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-trophy" style="color: #fbbf24;"></i>
+                        لوحة المتصدرين
+                    </div>
+                    <div class="card-content">
+                        <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 1rem; background: rgba(251, 191, 36, 0.1); border-radius: 0.5rem; border: 1px solid rgba(251, 191, 36, 0.2);">
+                                <span style="font-weight: bold;">1. أحمد محمد</span>
+                                <span style="color: var(--primary);">2540 نقطة</span>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 1rem; background: rgba(99, 102, 241, 0.05); border-radius: 0.5rem;">
+                                <span>2. سارة أحمد</span>
+                                <span style="color: var(--primary);">2310 نقطة</span>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 1rem; background: rgba(99, 102, 241, 0.05); border-radius: 0.5rem;">
+                                <span>3. خالد علي</span>
+                                <span style="color: var(--primary);">2150 نقطة</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-content">
+            <i class="fas fa-graduation-cap" style="font-size: 3rem; color: var(--primary); margin-bottom: 1.5rem;"></i>
+            <h2 id="auth-title">إنشاء حساب جديد</h2>
+            <p id="auth-desc">انضم إلى Kheir Math لبدء رحلتك التعليمية</p>
+
+            <form id="auth-form">
+                <div class="form-group" id="username-group">
+                    <label>اسم المستخدم</label>
+                    <input type="text" id="user-name" placeholder="مثلاً: أحمد محمد" required>
+                </div>
+                <div class="form-group">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" id="user-email" placeholder="example@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>كلمة المرور</label>
+                    <input type="password" id="user-password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" id="auth-submit" class="btn btn-primary"
+                    style="width: 100%; justify-content: center;">إنشاء حساب</button>
+            </form>
+
+            <p style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                <span id="auth-toggle-text">لديك حساب بالفعل؟</span>
+                <a href="#" id="auth-toggle-btn"
+                    style="color: var(--primary); font-weight: 600; text-decoration: none;">سجل دخولك</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
