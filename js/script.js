@@ -37,17 +37,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Handle session persistence
+    // --- AUTHENTICATION & UI SYNC ---
+    function syncAuthStateUI(user) {
+        const headerInfo = document.querySelector('.header-info p');
+        if (user) {
+            authModal.classList.add('hidden');
+            const username = user.displayName || user.email.split('@')[0];
+            if (headerInfo) headerInfo.innerText = `مرحباً بك، ${username}`;
+
+            // Trigger renderings that depend on user
+            renderMyQuestions();
+        } else {
+            authModal.classList.remove('hidden');
+            if (headerInfo) headerInfo.innerText = 'مرحباً بك مجدداً في رحلتك التعليمية';
+        }
+    }
+
     if (window.auth) {
         auth.onAuthStateChanged((user) => {
-            if (user) {
-                authModal.classList.add('hidden');
-                console.log('User is signed in:', user.email);
-                // Trigger renderings that depend on user
-                renderMyQuestions();
-            } else {
-                authModal.classList.remove('hidden');
-            }
+            syncAuthStateUI(user);
         });
     }
 
@@ -434,7 +442,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Initial render of questions
-    renderMyQuestions();
-    // Old Auth removed - merged into Firebase system above
+    // Initial render of questions moved to syncAuthStateUI
+    // --- END OF SCRIPT ---
 });
