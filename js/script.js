@@ -372,16 +372,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         db.collection('questions')
             .where('userEmail', '==', userEmail)
-            .orderBy('id', 'desc')
             .onSnapshot((snapshot) => {
+                console.log('Received questions snapshot:', snapshot.size, 'docs');
                 if (snapshot.empty) {
                     myQuestionsList.innerHTML = '<p style="color: var(--text-muted);">لم تقم بطرح أي أسئلة بعد.</p>';
                     return;
                 }
 
                 myQuestionsList.innerHTML = '';
-                snapshot.docs.forEach(doc => {
-                    const q = doc.data();
+
+                // Sort in JS to avoid Index requirements in Firestore
+                const sortedDocs = snapshot.docs.map(doc => ({ id_doc: doc.id, ...doc.data() }))
+                    .sort((a, b) => (b.timestamp?.seconds || b.id) - (a.timestamp?.seconds || a.id));
+
+                sortedDocs.forEach(q => {
                     const div = document.createElement('div');
                     div.className = 'card';
                     div.style.marginBottom = '1rem';
@@ -476,7 +480,8 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.innerText = 'جاري الإرسال...';
 
             const newQuestion = {
-                id: Date.now(),
+                id: Date.now(), // Legacy ID for sorting fallback
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                 title,
                 details,
                 image: selectedImageBase64,
@@ -500,7 +505,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }, 10000);
 
-            db.collection('questions').add(newQuestion)
+            window.db.collection('questions').add(newQuestion)
                 .then(() => {
                     clearTimeout(timeout);
                     console.log('Question added successfully!');
@@ -510,8 +515,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 .catch(err => {
                     clearTimeout(timeout);
-                    console.error("Error adding document: ", err);
-                    alert("فشل في إرسال السؤال: " + err.message);
+                    console.error("CRITICAL Firestore Error: ", err);
+                    alert("فشل في إرسال السؤال!\nالسبب: " + err.message + "\n\n1. تأكد من تفعيل Firestore في الـ Console.\n2. تأكد من ضبط الـ Rules لـ if true.");
                 })
                 .finally(() => {
                     if (!btnElement.disabled) return; // Already handled by timeout

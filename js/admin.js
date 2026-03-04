@@ -87,16 +87,20 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderInbox() {
         if (!adminInbox || !window.db) return;
 
-        db.collection('questions').orderBy('id', 'desc').onSnapshot((snapshot) => {
+        db.collection('questions').onSnapshot((snapshot) => {
             adminInbox.innerHTML = '';
             if (snapshot.empty) {
                 adminInbox.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 2rem;">لا توجد أسئلة حالياً.</p>';
                 return;
             }
 
-            snapshot.docs.forEach((doc) => {
-                const q = doc.data();
-                const docId = doc.id;
+            // Sort in JS to avoid Index requirements
+            const sortedDocs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+                .sort((a, b) => (b.timestamp?.seconds || b.id || 0) - (a.timestamp?.seconds || a.id || 0));
+
+            sortedDocs.forEach((q_data) => {
+                const q = q_data;
+                const docId = q_data.id;
                 const div = document.createElement('div');
                 div.className = 'inbox-item';
                 const inboxHeaderHTML = `
