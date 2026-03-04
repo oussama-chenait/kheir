@@ -84,10 +84,47 @@
             margin-bottom: 2rem;
             box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
         }
+
+        .main-content {
+            margin-right: 250px;
+            margin-left: 0;
+            transition: margin-right 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-right: 0 !important;
+                padding: 1.5rem 1rem;
+            }
+
+            .math-tool-card {
+                padding: 1.5rem !important;
+            }
+
+            .input-group {
+                gap: 1rem !important;
+            }
+
+            .math-input input {
+                width: 60px !important;
+                font-size: 1rem !important;
+            }
+        }
     </style>
 </head>
 
 <body>
+    <div class="menu-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </div>
 
     <div class="app-container">
         <!-- Sidebar -->

@@ -29,6 +29,8 @@ body {
 .app-container {
   display: flex;
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 /* Sidebar */
@@ -189,8 +191,10 @@ h1 {
   }
 
   .main-content {
-    margin-right: 0;
-    padding: 1.5rem 1rem;
+    margin-right: 0 !important;
+    width: 100% !important;
+    padding: 1rem;
+    overflow-x: hidden;
   }
 
   /* Menu Toggle Button */
@@ -218,9 +222,26 @@ h1 {
 
   .header {
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
+    text-align: center;
     gap: 1rem;
-    padding-top: 3.5rem;
+    padding-top: 4rem;
+  }
+
+  .header-info {
+    text-align: center;
+    width: 100%;
+  }
+
+  .resource-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .resource-thumb {
+    width: 100% !important;
+    height: 100px !important;
+    margin-bottom: 1rem;
   }
 }
 

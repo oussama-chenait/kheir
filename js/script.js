@@ -43,6 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (user) {
                 authModal.classList.add('hidden');
                 console.log('User is signed in:', user.email);
+                // Trigger renderings that depend on user
+                renderMyQuestions();
             } else {
                 authModal.classList.remove('hidden');
             }
@@ -120,8 +122,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     const user = result.user;
                     db.collection('users').doc(user.uid).get().then((doc) => {
                         if (!doc.exists) {
+                            // New Google user, create profile with username from email
+                            const generatedUsername = user.email.split('@')[0];
                             return db.collection('users').doc(user.uid).set({
-                                username: user.displayName,
+                                username: generatedUsername,
                                 email: user.email,
                                 ip: ip,
                                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -355,8 +359,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const myQuestionsList = document.getElementById('my-questions-list');
 
     function renderMyQuestions() {
-        if (!myQuestionsList || !window.db) return;
-        const userEmail = localStorage.getItem('userEmail');
+        if (!myQuestionsList || !window.db || !auth.currentUser) return;
+        const userEmail = auth.currentUser.email;
 
         db.collection('questions')
             .where('userEmail', '==', userEmail)
@@ -402,18 +406,18 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const title = document.querySelector('.ask-teacher-form input').value;
             const details = document.querySelector('.ask-teacher-form textarea').value;
-            const userEmail = localStorage.getItem('userEmail');
+            const currentUser = auth.currentUser;
 
             if (!title || !details) return alert('الرجاء ملء بيانات السؤال');
-            if (!userEmail) return alert('الرجاء تسجيل الدخول أولاً');
+            if (!currentUser) return alert('الرجاء تسجيل الدخول أولاً');
             if (!window.db) return alert('خطأ في الاتصال بقاعدة البيانات');
 
             const newQuestion = {
                 id: Date.now(),
                 title,
                 details,
-                sender: userEmail.split('@')[0],
-                userEmail: userEmail,
+                sender: currentUser.email.split('@')[0],
+                userEmail: currentUser.email,
                 time: new Date().toLocaleString('ar-DZ'),
                 reply: null
             };
