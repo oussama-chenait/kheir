@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة التفاعل | Kheir Math</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .sidebar {
+            right: 0;
+            left: auto;
+            border-left: 1px solid var(--border);
+        }
+
+        .main-content {
+            margin-right: 250px;
+            margin-left: 0;
+        }
+
+        .community-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .quiz-card {
+            background: var(--surface);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ask-teacher-form {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: 0.75rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: white;
+            resize: vertical;
+        }
+
+        .upload-box {
+            border: 2px dashed var(--border);
+            padding: 2rem;
+            text-align: center;
+            border-radius: 1rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .upload-box:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        @media (max-width: 992px) {
+            .community-sections {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="menu-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <div class="app-container">
+        <nav class="sidebar">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Kheir Math</span>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item"><a href="../index.html" class="nav-link"><i
+                            class="fas fa-home"></i><span>الرئيسية</span></a></li>
+                <li class="nav-item"><a href="resources.html" class="nav-link"><i
+                            class="fas fa-book-open"></i><span>المكتبة الرقمية</span></a></li>
+                <li class="nav-item"><a href="mathlab.html" class="nav-link"><i class="fas fa-flask"></i><span>المختبر
+                            الرياضي</span></a></li>
+                <li class="nav-item"><a href="community.html" class="nav-link active"><i
+                            class="fas fa-users"></i><span>منصة
+                            التفاعل</span></a></li>
+                <li class="nav-item" style="margin-top: auto;"><a href="admin.html" class="nav-link" id="admin-link"><i
+                            class="fas fa-user-shield"></i><span>لوحة الأستاذ</span></a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <header>
+                <h1>منصة التفاعل</h1>
+                <p style="color: var(--text-muted);">تحدَّ نفسك واسأل عما يدور في ذهنك</p>
+            </header>
+
+            <div class="community-sections">
+                <!-- Quizzes Section -->
+                <section>
+                    <h2 style="margin-bottom: 1.5rem;"><i class="fas fa-pen-nib"></i> الكويزات (Quizzes) - قيد التطوير
+                    </h2>
+
+                    <div class="quiz-card" style="opacity: 0.7;">
+                        <div>
+                            <h3 style="font-size: 1.1rem;">كويز: المشتقات الأساسية</h3>
+                            <p style="color: var(--text-muted); font-size: 0.85rem;">10 أسئلة • 15 دقيقة</p>
+                        </div>
+                        <button class="btn"
+                            style="background: var(--bg); color: var(--text-muted); cursor: not-allowed;" disabled>قيد
+                            التطوير</button>
+                    </div>
+
+                    <div class="quiz-card" style="opacity: 0.7;">
+                        <div>
+                            <h3 style="font-size: 1.1rem;">تحدي الأسبوع: التكامل</h3>
+                            <p style="color: var(--text-muted); font-size: 0.85rem;">5 أسئلة صعبة • 20 دقيقة</p>
+                        </div>
+                        <button class="btn"
+                            style="background: var(--bg); color: var(--text-muted); cursor: not-allowed;" disabled>قيد
+                            التطوير</button>
+                    </div>
+
+                    <div class="quiz-card" style="opacity: 0.6;">
+                        <div>
+                            <h3 style="font-size: 1.1rem;">مراجعة الوحدة الثانية</h3>
+                            <p style="color: var(--text-muted); font-size: 0.85rem;">متاح قريباً...</p>
+                        </div>
+                        <button class="btn" style="background: var(--bg); color: var(--text-muted);"
+                            disabled>مغلق</button>
+                    </div>
+                </section>
+
+                <!-- Ask teacher section -->
+                <section>
+                    <h2 style="margin-bottom: 1.5rem;"><i class="fas fa-comments"></i> اسأل الأستاذ</h2>
+
+                    <div class="ask-teacher-form">
+                        <div class="form-group">
+                            <label>عنوان السؤال</label>
+                            <input type="text" placeholder="مثلاً: صعوبة في فهم قاعدة السلسلة">
+                        </div>
+
+                        <div class="form-group">
+                            <label>تفاصيل السؤال</label>
+                            <textarea rows="4" placeholder="اكتب سؤالك هنا بالتفصيل..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>صورة للسؤال (اختياري)</label>
+                            <div class="upload-box">
+                                <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                                <p>اسحب الصورة هنا أو اضغط للرفع</p>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" style="width: 100%; justify-content: center;">إرسال
+                            السؤال</button>
+                    </div>
+                </section>
+            </div>
+            <!-- My Questions Section -->
+            <section style="margin-top: 3rem;">
+                <h2 style="margin-bottom: 1.5rem;"><i class="fas fa-question-circle"></i> أسئلتي السابقة</h2>
+                <div id="my-questions-list">
+                    <!-- Loaded via JS -->
+                    <p style="color: var(--text-muted);">لم تقم بطرح أي أسئلة بعد.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    <script src="../js/firebase-config.js"></script>
+
+    <script src="../js/script.js"></script>
+</body>
+
+</html>
